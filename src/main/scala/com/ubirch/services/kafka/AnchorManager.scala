@@ -23,8 +23,7 @@ abstract class AnchorManager(val config: Config, lifecycle: Lifecycle)
 
   override val keyDeserializer: Deserializer[String] = new StringDeserializer
   override val valueDeserializer: Deserializer[Array[Byte]] = new ByteArrayDeserializer
-  val importTopic: String = config.getString(AnchorConsumerConfPaths.IMPORT_TOPIC_PATH)
-  override val consumerTopics: Set[String] = Set(importTopic)
+  override val consumerTopics: Set[String] = Set(config.getString(AnchorConsumerConfPaths.IMPORT_TOPIC_PATH))
   override val keySerializer: Serializer[String] = new StringSerializer
   override val valueSerializer: Serializer[Array[Byte]] = new ByteArraySerializer
   override val consumerBootstrapServers: String = config.getString(AnchorConsumerConfPaths.BOOTSTRAP_SERVERS)
