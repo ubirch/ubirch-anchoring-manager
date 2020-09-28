@@ -42,7 +42,7 @@
 
     <logger name="com.ubirch" level="INFO"/>
 
-    <root level="WARN">
+    <root level="INFO">
         <appender-ref ref="JSONSTDOUT"/>
     </root>
 
