@@ -3,23 +3,40 @@ package services.kafka
 
 import com.typesafe.config.Config
 import com.typesafe.scalalogging.LazyLogging
-import com.ubirch.ConfPaths.{ AnchorConsumerConfPaths, AnchorProducerConfPaths }
+import com.ubirch.ConfPaths.{AnchorConsumerConfPaths, AnchorProducerConfPaths, GenericConfPaths}
 import com.ubirch.kafka.consumer.WithConsumerShutdownHook
 import com.ubirch.kafka.express.ExpressKafka
 import com.ubirch.kafka.producer.WithProducerShutdownHook
 import com.ubirch.services.lifeCycle.Lifecycle
 import com.ubirch.services.DispatchInfo
+import com.ubirch.util.ServiceMetrics
+import io.prometheus.client.Counter
 import javax.inject._
 import org.apache.kafka.common.serialization._
 
-import scala.concurrent.ExecutionContext
-import scala.util.{ Failure, Success }
+import scala.concurrent.{ExecutionContext, blocking}
+import scala.util.{Failure, Success}
 
 abstract class AnchorManager(val config: Config, lifecycle: Lifecycle)
   extends ExpressKafka[String, Array[Byte], Unit]
   with WithConsumerShutdownHook
   with WithProducerShutdownHook
+  with ServiceMetrics
   with LazyLogging {
+
+  override val service: String = config.getString(GenericConfPaths.NAME)
+
+  override val successCounter: Counter = Counter.build()
+    .name("anchoring_mgr_success")
+    .help("Represents the number anchor management successes")
+    .labelNames("service", "blockchain")
+    .register()
+
+  override val errorCounter: Counter = Counter.build()
+    .name("anchoring_mgr_failures")
+    .help("Represents the number of anchor management failures")
+    .labelNames("service", "blockchain")
+    .register()
 
   override val keyDeserializer: Deserializer[String] = new StringDeserializer
   override val valueDeserializer: Deserializer[Array[Byte]] = new ByteArrayDeserializer
@@ -56,12 +73,13 @@ class DefaultAnchorManager @Inject() (
 
       dispatchInfo.info.foreach { blockchain =>
         if (shouldSend(blockchain.period, tickCounter)) {
-          val sent = send(blockchain.topic, cr.value())
+          val sent = count(blockchain.normalizeName)(send(blockchain.topic, cr.value()))
+
           sent.onComplete {
             case Failure(e) =>
               logger.error(s"Error sending to topic ${blockchain.topic} for blockchain ${blockchain.name} {}", e.getMessage)
             case Success(_) =>
-              logger.info(s"Dispatched to blockchain ${blockchain.name}")
+              logger.debug(s"Dispatched to blockchain ${blockchain.name}")
           }
         }
       }
