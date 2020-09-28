@@ -56,6 +56,8 @@ abstract class AnchorManager(val config: Config, lifecycle: Lifecycle)
 
   lifecycle.addStopHooks(hookFunc(consumerGracefulTimeout, consumption), hookFunc(production))
 
+  def shouldSend(period: Int): Boolean
+
 }
 
 @Singleton
@@ -72,7 +74,8 @@ class DefaultAnchorManager @Inject() (
     crs.foreach { cr =>
 
       dispatchInfo.info.foreach { blockchain =>
-        if (shouldSend(blockchain.period, tickCounter)) {
+        if (shouldSend(blockchain.period)) {
+
           val sent = count(blockchain.normalizeName)(send(blockchain.topic, cr.value()))
 
           sent.onComplete {
@@ -87,9 +90,7 @@ class DefaultAnchorManager @Inject() (
     }
   }
 
-  def shouldSend(period: Int, counter: Int): Boolean = {
-    counter % period == 0
-  }
+  override def shouldSend(period: Int): Boolean = tickCounter % period == 0
 
   override def prefix: String = "Ubirch"
 
