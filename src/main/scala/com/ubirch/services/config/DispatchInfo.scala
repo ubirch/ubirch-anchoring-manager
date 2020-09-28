@@ -34,10 +34,10 @@ class DispatchInfo @Inject() (config: Config, jsonConverterService: JsonConverte
     } catch {
       case e: FileNotFoundException =>
         logger.error("Config dispatch info not found {}", e.getMessage)
-        None
+        throw e
       case e: IOException =>
         logger.error("Error parsing into Config dispatch info {}", e.getMessage)
-        None
+        throw e
     }
   }
 
