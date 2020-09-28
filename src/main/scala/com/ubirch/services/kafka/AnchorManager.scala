@@ -7,7 +7,7 @@ import com.ubirch.ConfPaths.{ AnchorConsumerConfPaths, AnchorProducerConfPaths, 
 import com.ubirch.kafka.consumer.WithConsumerShutdownHook
 import com.ubirch.kafka.express.ExpressKafka
 import com.ubirch.kafka.producer.WithProducerShutdownHook
-import com.ubirch.services.DispatchInfo
+import com.ubirch.services.config.DispatchInfo
 import com.ubirch.services.lifeCycle.Lifecycle
 import com.ubirch.util.ServiceMetrics
 import io.prometheus.client.Counter

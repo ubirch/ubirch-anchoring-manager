@@ -1,4 +1,4 @@
-package com.ubirch.services
+package com.ubirch.services.config
 
 import java.io.{ FileNotFoundException, IOException }
 import java.nio.file.{ Files, Paths }
@@ -7,7 +7,6 @@ import com.typesafe.config.Config
 import com.typesafe.scalalogging.LazyLogging
 import com.ubirch.ConfPaths.GenericConfPaths
 import com.ubirch.models.Dispatch
-import com.ubirch.services.config.ConfigProvider
 import com.ubirch.services.formats.{ DefaultJsonConverterService, JsonConverterService, JsonFormatsProvider }
 import javax.inject._
 

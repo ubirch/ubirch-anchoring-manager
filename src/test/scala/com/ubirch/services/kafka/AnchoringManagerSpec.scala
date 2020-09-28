@@ -1,7 +1,7 @@
 package com.ubirch.services.kafka
 
 import com.ubirch.kafka.util.PortGiver
-import com.ubirch.services.DispatchInfo
+import com.ubirch.services.config.DispatchInfo
 import com.ubirch.{ InjectorHelperImpl, TestBase }
 import net.manub.embeddedkafka.{ EmbeddedKafka, EmbeddedKafkaConfig }
 
