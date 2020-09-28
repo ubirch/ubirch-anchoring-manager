@@ -16,9 +16,9 @@ import scala.collection.JavaConverters._
 @Singleton
 class DispatchInfo @Inject() (config: Config, jsonConverterService: JsonConverterService) extends LazyLogging {
 
-  lazy val info: List[Dispatch] = loadInfo.map(x => toDispatch(x)).getOrElse(Nil)
-
   private val file: String = config.getString(GenericConfPaths.DISPATCH_INFO_PATH)
+
+  final val info: List[Dispatch] = loadInfo.map(x => toDispatch(x)).getOrElse(Nil)
 
   private def loadInfo: Option[String] = {
     try {
