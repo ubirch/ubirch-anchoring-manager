@@ -17,7 +17,8 @@ import scala.collection.JavaConverters._
 class DispatchInfo @Inject() (config: Config, jsonConverterService: JsonConverterService) extends LazyLogging {
 
   lazy val info: List[Dispatch] = loadInfo.map(x => toDispatch(x)).getOrElse(Nil)
-  val file: String = config.getString(GenericConfPaths.DISPATCH_INFO_PATH)
+
+  private val file: String = config.getString(GenericConfPaths.DISPATCH_INFO_PATH)
 
   private def loadInfo: Option[String] = {
     try {
@@ -44,10 +45,16 @@ class DispatchInfo @Inject() (config: Config, jsonConverterService: JsonConverte
   private def toDispatch(data: String): List[Dispatch] = {
 
     logger.debug(data.replace("\n", ""))
+
     jsonConverterService
       .as[List[Dispatch]](data)
       .map(data => {
-        data.foreach(d => if (d.period < 1) throw new IllegalArgumentException("Period should be an Int greater to 0"))
+        data.foreach { d =>
+          if (d.name.isEmpty && d.name.length < 3) throw new IllegalArgumentException("Name can't be empty or has less than three letters")
+          if (d.period < 1) throw new IllegalArgumentException("Period should be an Int greater to 0")
+          if (d.topic.isEmpty && d.topic.length < 3) throw new IllegalArgumentException("Topic can't be empty or has less than three letters")
+        }
+        if (data.isEmpty) throw new IllegalArgumentException("No valid Dispatching was found.")
         data
       })
       .fold(e => {
