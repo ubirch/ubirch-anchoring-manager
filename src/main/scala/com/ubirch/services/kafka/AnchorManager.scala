@@ -3,19 +3,19 @@ package services.kafka
 
 import com.typesafe.config.Config
 import com.typesafe.scalalogging.LazyLogging
-import com.ubirch.ConfPaths.{AnchorConsumerConfPaths, AnchorProducerConfPaths, GenericConfPaths}
+import com.ubirch.ConfPaths.{ AnchorConsumerConfPaths, AnchorProducerConfPaths, GenericConfPaths }
 import com.ubirch.kafka.consumer.WithConsumerShutdownHook
 import com.ubirch.kafka.express.ExpressKafka
 import com.ubirch.kafka.producer.WithProducerShutdownHook
-import com.ubirch.services.lifeCycle.Lifecycle
 import com.ubirch.services.DispatchInfo
+import com.ubirch.services.lifeCycle.Lifecycle
 import com.ubirch.util.ServiceMetrics
 import io.prometheus.client.Counter
 import javax.inject._
 import org.apache.kafka.common.serialization._
 
-import scala.concurrent.{ExecutionContext, blocking}
-import scala.util.{Failure, Success}
+import scala.concurrent.ExecutionContext
+import scala.util.{ Failure, Success }
 
 abstract class AnchorManager(val config: Config, lifecycle: Lifecycle)
   extends ExpressKafka[String, Array[Byte], Unit]

@@ -1,7 +1,7 @@
 package com.ubirch
 
-import com.google.inject.{ AbstractModule, Module }
 import com.google.inject.binder.ScopedBindingBuilder
+import com.google.inject.{ AbstractModule, Module }
 import com.typesafe.config.Config
 import com.ubirch.services.config.ConfigProvider
 import com.ubirch.services.execution.{ ExecutionProvider, SchedulerProvider }

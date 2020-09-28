@@ -1,10 +1,9 @@
 package com.ubirch.util
 
 import io.prometheus.client.Counter
-import monix.execution.CancelableFuture
 
-import scala.concurrent.{ExecutionContext, Future}
-import scala.util.{Failure, Success}
+import scala.concurrent.{ ExecutionContext, Future }
+import scala.util.{ Failure, Success }
 
 trait ServiceMetrics {
 
