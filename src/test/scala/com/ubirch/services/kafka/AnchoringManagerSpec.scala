@@ -1,8 +1,8 @@
-package com.ubirch
+package com.ubirch.services.kafka
 
 import com.ubirch.kafka.util.PortGiver
 import com.ubirch.services.DispatchInfo
-import com.ubirch.services.kafka.AnchorManager
+import com.ubirch.{ InjectorHelperImpl, TestBase }
 import net.manub.embeddedkafka.{ EmbeddedKafka, EmbeddedKafkaConfig }
 
 class AnchoringManagerSpec extends TestBase with EmbeddedKafka {
