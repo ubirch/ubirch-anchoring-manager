@@ -43,7 +43,7 @@ class DispatchInfo @Inject() (config: Config, jsonConverterService: JsonConverte
 
   private def toDispatch(data: String): List[Dispatch] = {
 
-    logger.debug(data.replace("\n", ""))
+    logger.info(data.replace("\n", ""))
 
     jsonConverterService
       .as[List[Dispatch]](data)

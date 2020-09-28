@@ -80,9 +80,9 @@ class DefaultAnchorManager @Inject() (
 
           sent.onComplete {
             case Failure(e) =>
-              logger.error(s"Error sending to topic ${blockchain.topic} for blockchain ${blockchain.name} {}", e.getMessage)
+              logger.error(s"KO name=${blockchain.name} topic=${blockchain.topic} period=${blockchain.period} tick=$tickCounter", e)
             case Success(_) =>
-              logger.debug(s"Dispatched to blockchain ${blockchain.name}")
+              logger.info(s"OK name=${blockchain.name} topic=${blockchain.topic} period=${blockchain.period} tick=$tickCounter")
           }
         }
       }
