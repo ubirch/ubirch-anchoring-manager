@@ -76,13 +76,14 @@ class DefaultAnchorManager @Inject() (
       dispatchInfo.info.foreach { blockchain =>
         if (shouldSend(blockchain.period)) {
 
+          val currentTick = tickCounter
           val sent = count(blockchain.normalizeName)(send(blockchain.topic, cr.value()))
 
           sent.onComplete {
             case Failure(e) =>
-              logger.error(s"KO name=${blockchain.name} topic=${blockchain.topic} period=${blockchain.period} tick=$tickCounter", e)
+              logger.error(s"KO name=${blockchain.name} topic=${blockchain.topic} period=${blockchain.period} tick=$currentTick", e)
             case Success(_) =>
-              logger.info(s"OK name=${blockchain.name} topic=${blockchain.topic} period=${blockchain.period} tick=$tickCounter")
+              logger.info(s"OK name=${blockchain.name} topic=${blockchain.topic} period=${blockchain.period} tick=$currentTick")
           }
         }
       }
