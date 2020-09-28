@@ -5,10 +5,10 @@ import java.nio.file.{ Files, Paths }
 
 import com.typesafe.config.Config
 import com.typesafe.scalalogging.LazyLogging
+import com.ubirch.ConfPaths.GenericConfPaths
 import com.ubirch.models.Dispatch
 import com.ubirch.services.config.ConfigProvider
 import com.ubirch.services.formats.{ DefaultJsonConverterService, JsonConverterService, JsonFormatsProvider }
-import com.ubirch.ConfPaths.GenericConfPaths
 import javax.inject._
 
 import scala.collection.JavaConverters._
