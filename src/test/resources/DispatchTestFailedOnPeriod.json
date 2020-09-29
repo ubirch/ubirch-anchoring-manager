@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Iota",
+    "period": 0,
+    "topic": "iota.topic"
+  },
+  {
+    "name": "Ethereum",
+    "period": 2,
+    "topic": "etc.topic"
+  }
+]
