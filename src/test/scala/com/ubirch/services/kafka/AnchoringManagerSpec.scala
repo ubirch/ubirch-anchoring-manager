@@ -1,5 +1,6 @@
 package com.ubirch.services.kafka
 
+import com.ubirch.InjectorHelper.InjectionException
 import com.ubirch.kafka.util.PortGiver
 import com.ubirch.services.config.DispatchInfo
 import com.ubirch.{ InjectorHelperImpl, TestBase }
@@ -8,6 +9,19 @@ import net.manub.embeddedkafka.{ EmbeddedKafka, EmbeddedKafkaConfig }
 class AnchoringManagerSpec extends TestBase with EmbeddedKafka {
 
   "The Anchoring Manager " must {
+
+    "break if info is wrong" in {
+      implicit lazy val kafkaConfig: EmbeddedKafkaConfig = EmbeddedKafkaConfig(kafkaPort = PortGiver.giveMeKafkaPort, zooKeeperPort = PortGiver.giveMeZookeeperPort)
+
+      lazy val bootstrapServers = "localhost:" + kafkaConfig.kafkaPort
+      lazy val Injector = new InjectorHelperImpl(bootstrapServers, Some("src/test/resources/DispatchTestFailedOnNotFound.json")) {}
+
+      assertThrows[InjectionException] {
+        Injector.get[AnchorManager]
+      }
+
+    }
+
     "trigger dispatch when period matches tick" in {
 
       implicit lazy val kafkaConfig: EmbeddedKafkaConfig = EmbeddedKafkaConfig(kafkaPort = PortGiver.giveMeKafkaPort, zooKeeperPort = PortGiver.giveMeZookeeperPort)
