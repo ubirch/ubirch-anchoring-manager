@@ -1,5 +1,7 @@
 # Ubirch Anchoring Manager
 
+## A Visual
+
 ![Placement](images/anchor-mgr.png)
 
 This service handles different anchoring frequencies per targeted blockchain based on the 
